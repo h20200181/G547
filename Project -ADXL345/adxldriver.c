@@ -180,7 +180,7 @@ static int __init adxl345_init(void)
 		printk("Accelerometer detected, value = %d\r\n",readvalue);
 	}
 
-	//Setting Data format to be left justified
+	//Setting Data format to be right justified
 	temp = adxl_read(my_client,REG_DATA_FORMAT);
 	temp = temp & (~(1<<2));
 	adxl_write(my_client, REG_DATA_FORMAT, temp);
@@ -197,16 +197,13 @@ static int __init adxl345_init(void)
 
 static void __exit adxl345_exit(void)
 {
-        printk(KERN_INFO "ADXL: Removing moduleq");
+        printk(KERN_INFO "ADXL: Removing module");
  	
 	i2c_unregister_device(my_client);
         cdev_del(&c_dev);
-//	unregister_chrdev(MAJOR_NO, DEVICE_NAME);
  	device_destroy(cl, first);
 	class_destroy(cl);
-	unregister_chrdev_region(first, 1);
-        //i2c_del_driver(&imu_driver);
- 
+	unregister_chrdev_region(first, 1); 
 }
 
 
